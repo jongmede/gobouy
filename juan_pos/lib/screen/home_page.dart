@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:juan_pos/screen/contact_page.dart';
 import 'package:juan_pos/screen/product_page.dart';
+import 'package:juan_pos/screen/sales_invoice_page.dart';
 import 'package:juan_pos/screen/setting.dart';
 
 class HomePage extends StatelessWidget {
@@ -65,7 +66,9 @@ class HomePage extends StatelessWidget {
           _makeDashboardItem(Icons.graphic_eq),
           _makeDashboardItem(Icons.format_list_numbered),
           _makeDashboardItem(Icons.lock),
-          _makeDashboardItem(Icons.shopping_basket),
+          _makeDashboardItem(Icons.shopping_basket, () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoicePage()));
+          }),
         ],
       ),
     );
