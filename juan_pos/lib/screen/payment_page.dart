@@ -7,8 +7,12 @@ class PaymentPage extends StatefulWidget {
 
 class PaymentPageState extends State<PaymentPage> {
 
+  // 1 - cash, 2 credit card.
+  int paymentChosen = 1;
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Payment'),
@@ -24,18 +28,28 @@ class PaymentPageState extends State<PaymentPage> {
                 Flexible(
                   flex: 1,
                   child: RadioListTile(
+                    activeColor: Theme.of(context).primaryColor,
+                    groupValue: paymentChosen,
                     title: Text('Cash'),
+                    value: 1,
                     onChanged: (value) {
-
+                      setState(() {
+                        paymentChosen = value;
+                      });
                     },
                   ),
                 ),
                 Flexible(
                   flex: 1,
                   child:  RadioListTile(
+                    activeColor: Theme.of(context).primaryColor,
+                    groupValue: paymentChosen,
                     title: Text('Credit Card'),
+                    value: 2,
                     onChanged: (value) {
-
+                      setState(() {
+                        paymentChosen = value;
+                      });
                     },
                   ),
                 ),
@@ -176,6 +190,8 @@ class PaymentPageState extends State<PaymentPage> {
                     padding: EdgeInsets.all(20.0),
                     child: RaisedButton(
                       child: Text('Cancel'),
+                      color: Color(0xff6558f5),
+                      textColor: Colors.white,
                       onPressed: () {
 
                       }
@@ -186,6 +202,8 @@ class PaymentPageState extends State<PaymentPage> {
                   flex: 1,
                   child: RaisedButton(
                     child: Text('OK'),
+                    color: Color(0xff6558f5),
+                    textColor: Colors.white,
                     onPressed: () {
 
                     }

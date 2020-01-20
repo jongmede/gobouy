@@ -20,14 +20,47 @@ class SalesInvoiceListPageState extends State<SalesInvoiceListPage> {
           border: TableBorder.all(color: Colors.black),
           children: [
             TableRow(children: [
-              Text('Cell 1',),
-              Text('Cell 2'),
-              Text('Cell 3'),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text('SI#',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text('Customer',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text('Amount',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
             ]),
             TableRow(children: [
-              Text('Cell 4'),
-              Text('Cell 5'),
-              Text('Cell 6'),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(''),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(''),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(''),
+              ),
             ])
           ],
         ),

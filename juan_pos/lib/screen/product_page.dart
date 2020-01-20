@@ -117,6 +117,36 @@ class ProductPageState extends State<ProductPage> {
 
                 },
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: RaisedButton(
+                        child: Text('Cancel'),
+                        color: Color(0xff6558f5),
+                        textColor: Colors.white,
+                        onPressed: () {
+
+                        }
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: RaisedButton(
+                      child: Text('OK'),
+                      color: Color(0xff6558f5),
+                      textColor: Colors.white,
+                      onPressed: () {
+
+                      }
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
