@@ -21,18 +21,48 @@ class SearchBarcodePageState extends State<SearchBarcodePage> {
 
             },
           ),
+          SizedBox(height: 20),
           Table(
             border: TableBorder.all(color: Colors.black),
+            columnWidths: {
+              0: FlexColumnWidth(3),
+              1: FlexColumnWidth(2),
+            },
             children: [
               TableRow(children: [
-                Text('Product',),
-                Text('Price'),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text('Product',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text('Price',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
                 Text(''),
               ]),
               TableRow(children: [
-                Text('PriceChippy @ 25.00'),
-                Text('25.00'),
-                Text(''),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text('PriceChippy @ 25.00'),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text('25.00'),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(''),
+                ),
               ])
             ],
           ),
