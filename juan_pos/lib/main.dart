@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:juan_pos/screen/home_page.dart';
+import 'package:juan_pos/screen/root_page.dart';
+import 'package:juan_pos/service/authentication.dart';
 import 'package:juan_pos/util/dynamic_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +55,7 @@ class MyAppState extends State<MyApp> {
 
     return MaterialApp(
       theme: themeProvider.getDarkMode() ? dark: light,
-      home: HomePage(),
+      home: RootPage(auth: Auth())
     );
   }
 }

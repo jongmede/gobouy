@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "815154057584",
+    "firebase_url": "https://juanpos-1f057.firebaseio.com",
+    "project_id": "juanpos-1f057",
+    "storage_bucket": "juanpos-1f057.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815154057584:android:aec051e627e35908267fb5",
+        "android_client_info": {
+          "package_name": "com.juanpos.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815154057584-bsor136sin451fdthe3jh2icv5f5736a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-t-8NmgKZ84Yo3SGLAJfRpxRp4MJtK1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815154057584-bsor136sin451fdthe3jh2icv5f5736a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

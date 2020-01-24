@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:juan_pos/screen/contact_page.dart';
 import 'package:juan_pos/screen/product_page.dart';
+import 'package:juan_pos/screen/root_page.dart';
 import 'package:juan_pos/screen/sales_invoice_list_page.dart';
 import 'package:juan_pos/screen/sales_invoice_page.dart';
 import 'package:juan_pos/screen/setting.dart';
+import 'package:juan_pos/service/authentication.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+
+  HomePage({Key key, this.auth, this.userId, this.logoutCallback}) : super(key: key);
+
+  final BaseAuth auth;
+  final VoidCallback logoutCallback;
+  final String userId;
+
+  @override
+  State<StatefulWidget> createState() => new _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
 
   Card _makeDashboardItem(IconData icon, String label, [ Function callback ]) {
     return Card(
@@ -55,11 +69,31 @@ class HomePage extends StatelessWidget {
                 child: Text('Settings'),
                 value: 'settings',
               ));
+              list.add(PopupMenuDivider(
+                height: 1.0,
+              ));
+              list.add(PopupMenuItem(
+                child: Text('Logout'),
+                value: 'logout',
+              ));
               return list;
             },
-            onSelected: (value) {
+            onSelected: (value) async {
               if (value == 'settings') {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
+              }
+              else if (value == 'logout') {
+                try {
+                  await widget.auth.signOut();
+                  widget.logoutCallback();
+                } catch (e) {
+                  print(e);
+                }
+
+                Navigator.of(context, rootNavigator: true).pop();
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {
+                  return RootPage(auth: Auth());
+                }), ModalRoute.withName('/'));
               }
             },
           ),
