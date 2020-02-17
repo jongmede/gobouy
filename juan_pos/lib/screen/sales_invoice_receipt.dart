@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:juan_pos/database/product.dart';
 import 'package:juan_pos/database/database_helper.dart';
+import 'package:juan_pos/database/sales_invoice.dart';
 import 'package:juan_pos/database/tender.dart';
 import 'package:juan_pos/database/transaction.dart';
-import 'file:///C:/code/flutter/juanpos/juan_pos/lib/database/sales_invoice.dart';
 
 class SalesInvoiceReceipt extends StatefulWidget {
 
