@@ -1,8 +1,7 @@
 
-class Void{
+class Void {
 
-  int ctrId, transacId,number,productId, vat, nVat, transactionRefId;
-  double qty,unitPrice,scDiscountAmount,pdwDiscountAmount,otherDiscountAmount;
-//typedoc
+  int ctrId, transactionId, number, productId, vat, nonVat, transactionRefId;
+  double qty, unitPrice, scDiscountAmount, pwdDiscountAmount, otherDiscountAmount;
 
 }

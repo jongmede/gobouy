@@ -334,7 +334,7 @@ class PaymentPageState extends State<PaymentPage> {
   double getTotal(){
     double total = 0;
     widget.transactions.forEach((t){
-      double tTotal = (t.unitPrice*t.qty)-(t.otherDiscountAmt+t.scDiscountAmt+t.pdwDiscountAmt);
+      double tTotal = (t.unitPrice*t.qty)-(t.otherDiscountAmt+t.scDiscountAmt+t.pwdDiscountAmt);
       total = total +tTotal;
     });
     return total.roundToDouble();

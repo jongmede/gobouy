@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:juan_pos/database/product.dart';
 import 'package:juan_pos/database/database_helper.dart';
+import 'package:juan_pos/model/product.dart';
 
 class SearchBarcodePage extends StatefulWidget {
 
@@ -35,7 +35,7 @@ class SearchBarcodePageState extends State<SearchBarcodePage> {
       height: (MediaQuery.of(context).size.height/1.6),
       color: Colors.white,
       child: FutureBuilder(
-        future: db.getProduct(),
+        future: db.getProducts(),
         builder: (BuildContext context,AsyncSnapshot<List<Product>> snapshot){
           return snapshot.hasData?Column(
             mainAxisSize: MainAxisSize.min,

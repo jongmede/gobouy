@@ -3,10 +3,10 @@ import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'product.dart';
+import '../model/product.dart';
 import 'contact.dart';
 import 'transaction.dart' as _Transaction;
-import 'category.dart';
+import '../model/category.dart';
 import 'tender.dart';
 
 class DatabaseHelper {
@@ -32,78 +32,82 @@ class DatabaseHelper {
   void _onCreate(Database db, int version) async {
     // When creating the db, create the table
     await db.execute(
-        "CREATE TABLE Product("
-            "productId INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "productName TEXT,"
-            "categoryId INTEGER,"
-            "productCode TEXT,"
-            "unitCost FLOAT,"
-            "unitPrice FLOAT,"
-            "nVat INTEGER,"
-            "vat INTEGER,"
-            "scDiscount INTEGER,"
-            "scDiscountPercent FLOAT,"
-            "pdwDiscount INTEGER,"
-            "pdwDiscountPercent FLOAT,"
-            "otherDiscount INTEGER,"
-            "otherDiscountPercent FLOAT,"
-            "scVatExempt INTEGER,"
-            "pdwVatExempt INTEGER,"
-            "zeroRated INTEGER"
-            ")");
-
-    await db.execute(
-        "CREATE TABLE Contact("
-            "contactId INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "contactName TEXT,"
-            "address TEXT,"
-            "tin TEXT,"
-            "busStyle TEXT,"
-            "pwId TEXT,"
-            "scId TEXT"
-            ")");
-
-    await db.execute(
-      "CREATE TABLE Tender("
-          "tenderId INTEGER PRIMARY KEY AUTOINCREMENT,"
-          "ctrId INTEGER,"
-          "cashPay INTEGER,"
-          "cardPay INTEGER,"
-          "cardType INTEGER,"
-          "cardNum INTEGER,"
-          "transactionRefId INTEGER,"
-          "contactId INTEGER,"
-          "userId INTEGER,"
-          "approvalCode TEXT,"
-          "amount FLOAT"
-          ")"
+      "CREATE TABLE Product("
+        "productId INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "productName TEXT,"
+        "categoryId INTEGER,"
+        "productCode TEXT,"
+        "unitCost FLOAT,"
+        "unitPrice FLOAT,"
+        "nonVat INTEGER,"
+        "vat INTEGER,"
+        "scDiscount INTEGER,"
+        "scDiscountPercent FLOAT,"
+        "pwdDiscount INTEGER,"
+        "pwdDiscountPercent FLOAT,"
+        "otherDiscount INTEGER,"
+        "otherDiscountPercent FLOAT,"
+        "scVatExempt INTEGER,"
+        "pwdVatExempt INTEGER,"
+        "zeroRated INTEGER"
+        ")"
     );
 
     await db.execute(
-        "CREATE TABLE Transac("
-            "transacId INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "typeDoc TEXT,"
-            "number INTEGER,"
-            "productId INTEGER,"
-            "qty FLOAT,"
-            "unitPrice FLOAT,"
-            "scDiscountAmt FLOAT,"
-            "pdwDiscountAmt FLOAT,"
-            "otherDiscountAmt FLOAT,"
-            "taxType TEXT,"
-            "nonVatSales FLOAT,"
-            "vatableSales FLOAT,"
-            "vatAmt FLOAT,"
-            "vatExemptSales FLOAT,"
-            "zeroRatedSales FLOAT,"
-            "customerId INTEGER"
-            ")");
+      "CREATE TABLE Contact("
+        "contactId INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "contactName TEXT,"
+        "address TEXT,"
+        "tin TEXT,"
+        "busStyle TEXT,"
+        "pwId TEXT,"
+        "scId TEXT"
+        ")"
+    );
 
     await db.execute(
-        "CREATE TABLE Category("
-        "categoryId INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "categoryName TEXT"
-        ")");
+      "CREATE TABLE Tender("
+        "tenderId INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "ctrId INTEGER,"
+        "cashPay INTEGER,"
+        "cardPay INTEGER,"
+        "cardType INTEGER,"
+        "cardNum INTEGER,"
+        "transactionRefId INTEGER,"
+        "contactId INTEGER,"
+        "userId INTEGER,"
+        "approvalCode TEXT,"
+        "amount FLOAT"
+        ")"
+    );
+
+    await db.execute(
+      "CREATE TABLE Transac("
+        "transacId INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "typeDoc TEXT,"
+        "number INTEGER,"
+        "productId INTEGER,"
+        "qty FLOAT,"
+        "unitPrice FLOAT,"
+        "scDiscountAmt FLOAT,"
+        "pwdDiscountAmt FLOAT,"
+        "otherDiscountAmt FLOAT,"
+        "taxType TEXT,"
+        "nonVatSales FLOAT,"
+        "vatableSales FLOAT,"
+        "vatAmt FLOAT,"
+        "vatExemptSales FLOAT,"
+        "zeroRatedSales FLOAT,"
+        "customerId INTEGER"
+        ")"
+    );
+
+    await db.execute(
+      "CREATE TABLE Category("
+      "categoryId INTEGER PRIMARY KEY AUTOINCREMENT,"
+      "categoryName TEXT"
+      ")"
+    );
 
   }
 
@@ -137,7 +141,7 @@ class DatabaseHelper {
     return res;
   }
 
-  Future<List<Product>> getProduct() async {
+  Future<List<Product>> getProducts() async {
     var dbClient = await db;
     List<Map> list = await dbClient.rawQuery('SELECT * FROM Product');
     List<Product> products = new List();
@@ -181,9 +185,9 @@ class DatabaseHelper {
     return tenders;
   }
 
-  Future<List<Category>> getCategory() async {
+  Future<List<Category>> getCategories() async {
     var dbClient = await db;
-    List<Map> list = await dbClient.rawQuery('SELECT * FROM Category');
+    List<Map> list = await dbClient.rawQuery('SELECT * FROM Category ORDER BY categoryName');
     List<Category> categories = new List();
     list.forEach((result) {
       Category category = Category.fromMap(result);
@@ -212,7 +216,7 @@ class DatabaseHelper {
     var dbClient = await db;
 
     int res =
-    await dbClient.rawDelete('DELETE FROM Transaction WHERE id = ?', [transaction.transacId]);
+    await dbClient.rawDelete('DELETE FROM Transaction WHERE id = ?', [transaction.transactionId]);
     return res;
   }
 
@@ -220,14 +224,13 @@ class DatabaseHelper {
     var dbClient = await db;
 
     int res =
-    await dbClient.rawDelete('DELETE FROM Category WHERE id = ?', [category.categoryId]);
+    await dbClient.rawDelete('DELETE FROM Category WHERE categoryId = ?', [category.categoryId]);
     return res;
   }
 
   Future<bool> updateProduct(Product product) async {
     var dbClient = await db;
-    int res =   await dbClient.update("Product", product.toMap(),
-        where: "productId = ?", whereArgs: <int>[product.productId]);
+    int res = await dbClient.update("Product", product.toMap(), where: "productId = ?", whereArgs: <int>[product.productId]);
     return res > 0 ? true : false;
   }
 
@@ -241,14 +244,13 @@ class DatabaseHelper {
   Future<bool> updateTransaction(_Transaction.Transaction transaction) async {
     var dbClient = await db;
     int res =   await dbClient.update("Transaction", transaction.toMap(),
-        where: "id = ?", whereArgs: <int>[transaction.transacId]);
+        where: "id = ?", whereArgs: <int>[transaction.transactionId]);
     return res > 0 ? true : false;
   }
 
   Future<bool> updateCategory(Category c) async {
     var dbClient = await db;
-    int res =   await dbClient.update("Transaction", c.toMap(),
-        where: "id = ?", whereArgs: <int>[c.categoryId]);
+    int res =   await dbClient.update('Category', c.toMap(), where: 'categoryId = ?', whereArgs: <int>[c.categoryId]);
     return res > 0 ? true : false;
   }
 }

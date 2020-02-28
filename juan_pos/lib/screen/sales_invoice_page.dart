@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:juan_pos/database/contact.dart';
 import 'package:juan_pos/database/database_helper.dart';
-import 'package:juan_pos/database/product.dart';
+import 'package:juan_pos/model/product.dart';
 import 'package:juan_pos/screen/search_barcode_page.dart';
 import 'payment_page.dart';
 import 'select_contact_page.dart';
@@ -286,7 +286,7 @@ class SalesInvoicePageState extends State<SalesInvoicePage> {
   //methods
 
   updateProductsById() async{
-    List<Product> products = await db.getProduct();
+    List<Product> products = await db.getProducts();
     products.forEach((product){
       productById[product.productId] = product;
     });
@@ -362,7 +362,7 @@ class SalesInvoicePageState extends State<SalesInvoicePage> {
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.all(10),
-            child: !otherApplied?Text((pdwApplied?productById[id].pdwDiscountPercent*100:productById[id].scDiscountPercent*100).toString(),
+            child: !otherApplied?Text((pdwApplied?productById[id].pwdDiscountPercent*100:productById[id].scDiscountPercent*100).toString(),
               style: TextStyle(
                 fontSize: 16,
               ),
@@ -445,7 +445,7 @@ class SalesInvoicePageState extends State<SalesInvoicePage> {
       discount = (p.unitPrice*quantity)*p.scDiscountPercent;
     }
     if(pdwApplied){
-      discount = (p.unitPrice*quantity)*p.pdwDiscountPercent;
+      discount = (p.unitPrice*quantity)*p.pwdDiscountPercent;
     }
 
     if(otherApplied){
@@ -459,20 +459,20 @@ class SalesInvoicePageState extends State<SalesInvoicePage> {
     cart.forEach((id,quantity){
       Product product = productById[id];
       transactions.add(new Transaction(
-        taxType: product.vat==1?"vat":"nVat",
+        taxType: product.vat==1?"vat":"nonVat",
         productId: id,
         customerId: selectedCustomer.contactId,
         qty: quantity.toDouble(),
         unitPrice: product.unitPrice,
         scDiscountAmt: product.scDiscount==1&&scApplied?(product.scDiscountPercent*quantity*product.unitPrice):0,
-        pdwDiscountAmt: product.scDiscount==1&&pdwApplied?(product.pdwDiscountPercent*quantity*product.unitPrice):0,
+        pwdDiscountAmt: product.scDiscount==1&&pdwApplied?(product.pwdDiscountPercent*quantity*product.unitPrice):0,
         otherDiscountAmt: product.scDiscount==1&&otherApplied?(product.otherDiscountPercent*quantity*product.unitPrice):0,
-        nonVatSales: product.nVat==1?(product.unitPrice*quantity):0,
+        nonVatSales: product.nonVat==1?(product.unitPrice*quantity):0,
         vatableSales: product.vat==1?(getUnitVatableSales(product,quantity)):0,
         vatAmt: product.vat==1?(getUnitVatableSales(product,quantity)*0.12):0,
         //uncertain fields
         number: invoiceNum,
-        vatExemptSales: (product.scVatExempt==1||product.pdwVatExempt==1)?(product.unitPrice*quantity):0,
+        vatExemptSales: (product.scVatExempt==1||product.pwdVatExempt==1)?(product.unitPrice*quantity):0,
         zeroRatedSales: product.zeroRated==1?(product.unitPrice*quantity):0,
       ));
     });
@@ -482,7 +482,7 @@ class SalesInvoicePageState extends State<SalesInvoicePage> {
 
   double getUnitVatableSales(Product p,int qty){
     double sales = 0;
-    if(p.vat==1&&p.zeroRated==0&&p.pdwVatExempt==0&&p.scVatExempt==0){
+    if(p.vat==1&&p.zeroRated==0&&p.pwdVatExempt==0&&p.scVatExempt==0){
       sales = p.unitPrice*qty;
     }
     return sales;

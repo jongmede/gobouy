@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:juan_pos/database/product.dart';
 import 'package:juan_pos/database/database_helper.dart';
+import 'package:juan_pos/database/sales_invoice.dart';
 import 'package:juan_pos/database/tender.dart';
 import 'package:juan_pos/database/transaction.dart';
-import 'file:///C:/code/flutter/juanpos/juan_pos/lib/database/sales_invoice.dart';
+import 'package:juan_pos/model/product.dart';
 
 class SalesInvoiceReceipt extends StatefulWidget {
 
@@ -266,7 +266,7 @@ class SalesInvoiceReceiptState extends State<SalesInvoiceReceipt> {
             ),
             Padding(
               padding: EdgeInsets.all(10),
-              child: Text((t.unitPrice*t.qty-t.otherDiscountAmt-t.scDiscountAmt-t.pdwDiscountAmt).toString(),
+              child: Text((t.unitPrice*t.qty-t.otherDiscountAmt-t.scDiscountAmt-t.pwdDiscountAmt).toString(),
                 style: TextStyle(
                     fontSize: 16,
                 ),
@@ -282,7 +282,7 @@ class SalesInvoiceReceiptState extends State<SalesInvoiceReceipt> {
 
 
   Future<Map> getDataBundle() async{
-    List<Product> products = await db.getProduct();
+    List<Product> products = await db.getProducts();
     List<Tender> tenders = await db.getTender();
     Map map = new Map();
     map["products"] = products;
@@ -302,7 +302,7 @@ class SalesInvoiceReceiptState extends State<SalesInvoiceReceipt> {
   double getItemTotal(List<Transaction> list){
     double total = 0;
     list.forEach((t){
-      total = total + (t.qty*t.unitPrice-t.pdwDiscountAmt-t.scDiscountAmt-t.otherDiscountAmt);
+      total = total + (t.qty*t.unitPrice-t.pwdDiscountAmt-t.scDiscountAmt-t.otherDiscountAmt);
     });
     return total;
   }

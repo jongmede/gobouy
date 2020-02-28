@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:juan_pos/screen/contact_page.dart';
-import 'package:juan_pos/screen/product_page.dart';
+import 'package:juan_pos/screen/product_list_page.dart';
 import 'package:juan_pos/screen/root_page.dart';
 import 'package:juan_pos/screen/sales_invoice_list_page.dart';
 import 'package:juan_pos/screen/sales_invoice_page.dart';
 import 'package:juan_pos/screen/setting.dart';
 import 'package:juan_pos/service/authentication.dart';
+
+import 'category_list_page.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -106,8 +108,11 @@ class _HomePageState extends State<HomePage> {
           _makeDashboardItem(Icons.person, 'CONTACTS', () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()));
           }),
+          _makeDashboardItem(Icons.category, 'CATEGORIES', () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryListPage()));
+          }),
           _makeDashboardItem(Icons.calendar_view_day, 'PRODUCTS', () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductListPage()));
           }),
           _makeDashboardItem(Icons.graphic_eq, 'REPORTS'),
           _makeDashboardItem(Icons.format_list_numbered, 'INVOICES', () {
