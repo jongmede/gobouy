@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:juan_pos/database/database_helper.dart';
 import 'package:juan_pos/database/transaction.dart';
-import 'package:juan_pos/database/tender.dart';
+import 'package:juan_pos/model/tender.dart';
 
 class PaymentPage extends StatefulWidget {
 
@@ -26,15 +26,18 @@ class PaymentPageState extends State<PaymentPage> {
   double receivedAmount;
   DatabaseHelper db = new DatabaseHelper();
 
-  int cardNum,refNum;
+  int cardNum, refNum;
   String cardName, approvalCode;
 
   List<Widget> _getCashWidgets() {
     return [
       TextFormField(
         decoration: InputDecoration(
-          hintText: "Enter Received Amount",
-          border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade300,width: 2),borderRadius: BorderRadius.circular(10)),
+          hintText: 'Enter Received Amount',
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+            borderRadius: BorderRadius.circular(10),
+          ),
           contentPadding: EdgeInsets.only(left: 20),
         ),
         keyboardType: TextInputType.numberWithOptions(signed: false),
@@ -44,17 +47,11 @@ class PaymentPageState extends State<PaymentPage> {
           });
         },
       ),
-
       SizedBox(height: 10,),
-
-      getTextBox("TOTAL AMOUNT : "+getTotal().toString()),
-
+      getTextBox('TOTAL AMOUNT : ' + getTotal().toString()),
       SizedBox(height: 10,),
-
-      getTextBox("CHANGE AMOUNT : "+(receivedAmount!=null?(receivedAmount-getTotal()).toString():"--")),
-
+      getTextBox('CHANGE AMOUNT : ' + (receivedAmount != null ? (receivedAmount - getTotal()).toString() : '--')),
       SizedBox(height: 10,),
-
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -79,7 +76,6 @@ class PaymentPageState extends State<PaymentPage> {
           Flexible(
             flex: 2,
             child:   getTextBox(getVatAmt().toString()),
-
           ),
         ],
       ),
@@ -117,7 +113,7 @@ class PaymentPageState extends State<PaymentPage> {
         children: <Widget>[
           Flexible(
             flex: 1,
-            child: Text("Zero-Rated Sales"),
+            child: Text('Zero-Rated Sales'),
           ),
           Flexible(
             flex: 2,
@@ -173,7 +169,7 @@ class PaymentPageState extends State<PaymentPage> {
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'XXXX-XXXX-XXXX-12345'),
-        keyboardType: TextInputType.numberWithOptions(signed: false,decimal: false),
+        keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
         onChanged: (value) {
           setState(() {
             cardNum = int.parse(value);
@@ -210,7 +206,7 @@ class PaymentPageState extends State<PaymentPage> {
           Flexible(
             flex: 2,
             child: TextField(
-              keyboardType: TextInputType.numberWithOptions(signed: false,decimal: false),
+              keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
               decoration: InputDecoration(hintText: '123443434'),
               onChanged: (value) {
                 setState(() {
@@ -298,10 +294,7 @@ class PaymentPageState extends State<PaymentPage> {
                     color: Color(0xff6558f5),
                     textColor: Colors.white,
                     onPressed: () {
-                      if(paymentChosen==1){
-                        submitTransactions();
-                      }
-                      if(paymentChosen==1&&cardName!=null&&cardNum!=null&&approvalCode!=null&&refNum!=null){
+                      if (paymentChosen == 1 && cardName != null && cardNum != null && approvalCode != null && refNum != null) {
                         submitTransactions();
                       }
                     }
@@ -315,9 +308,7 @@ class PaymentPageState extends State<PaymentPage> {
     );
   }
 
-
-  //methods
-  Widget getTextBox(String value){
+  Widget getTextBox(String value) {
     return Container(
       constraints: BoxConstraints.expand(height: 50),
       alignment: Alignment.centerLeft,
@@ -325,74 +316,81 @@ class PaymentPageState extends State<PaymentPage> {
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade300,width: 2)
+        border: Border.all(color: Colors.grey.shade300, width: 2)
       ),
-      child: Text(value,style: TextStyle(color: Colors.grey.shade400,fontSize: 16,fontWeight: FontWeight.bold),),
+      child: Text(value, 
+        style: TextStyle(
+          color: Colors.grey.shade400, 
+          fontSize: 16, 
+          fontWeight: FontWeight.bold
+        ),
+      ),
     );
   }
 
-  double getTotal(){
+  double getTotal() {
     double total = 0;
-    widget.transactions.forEach((t){
+    widget.transactions.forEach((t) {
       double tTotal = (t.unitPrice*t.qty)-(t.otherDiscountAmt+t.scDiscountAmt+t.pwdDiscountAmt);
       total = total +tTotal;
     });
     return total.roundToDouble();
   }
-  double getVatableSales(){
+
+  double getVatableSales() {
     double total = 0;
-    widget.transactions.forEach((t){
+    widget.transactions.forEach((t) {
       total = total + (t.vatableSales/1.12);
     });
     return total.roundToDouble();
   }
-  double getVatAmt(){
+
+  double getVatAmt() {
     double total = 0;
-    widget.transactions.forEach((t){
+    widget.transactions.forEach((t) {
       total = total + (t.vatAmt);
     });
     return total.roundToDouble();
   }
-  double getNonVatableSales(){
+
+  double getNonVatableSales() {
     double total = 0;
-    widget.transactions.forEach((t){
+    widget.transactions.forEach((t) {
       total = total + t.nonVatSales;
     });
     return total.roundToDouble();
   }
-  double getZeroRatedSales(){
+
+  double getZeroRatedSales() {
     double total = 0;
-    widget.transactions.forEach((t){
+    widget.transactions.forEach((t) {
       total = total + t.zeroRatedSales;
     });
     return total.roundToDouble();
   }
-  double getExemptSales(){
+
+  double getExemptSales() {
     double total = 0;
-    widget.transactions.forEach((t){
+    widget.transactions.forEach((t) {
       total = total + t.vatExemptSales;
     });
     return total.roundToDouble();
   }
 
-  submitTransactions(){
-    widget.transactions.forEach(
-        (t){
-          Tender tender = new Tender(
-            cashPay: paymentChosen==1?1:0,
-            cardPay: paymentChosen==2?1:0,
-            cardType: paymentChosen==2?creditCardType:0,
-            cardNum: cardNum,
-            transactionRefId: refNum,
-            contactId: t.customerId,
-            //userId
-            approvalCode: approvalCode,
-            amount: getTotal()
-          );
-          db.saveTransaction(t);
-          db.saveTender(tender);
-        }
-    );
+  submitTransactions() {
+    widget.transactions.forEach((transaction) {
+      Tender tender = Tender();
+      tender.cashPay = paymentChosen == 1 ? 1 : 0;
+      tender.cardPay = paymentChosen == 2 ? 1 : 0;
+      tender.cardType = paymentChosen == 2 ? creditCardType : 0;
+      tender.cardNum = cardNum;
+      tender.transactionRefId = refNum;
+      tender.contactId = transaction.customerId;
+      tender.approvalCode = approvalCode;
+      tender.amount = getTotal();
+      db.saveTransaction(transaction);
+      db.saveTender(tender);
+    });
     Navigator.of(context).pop();
   }
 }

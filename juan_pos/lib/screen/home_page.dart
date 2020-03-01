@@ -118,10 +118,10 @@ class _HomePageState extends State<HomePage> {
           _makeDashboardItem(Icons.format_list_numbered, 'INVOICES', () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceListPage()));
           }),
-          _makeDashboardItem(Icons.lock, 'USERS'),
           _makeDashboardItem(Icons.shopping_basket, 'SALES', () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoicePage()));
           }),
+          _makeDashboardItem(Icons.lock, 'USERS'),
         ],
       ),
     );

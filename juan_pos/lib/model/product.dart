@@ -11,7 +11,9 @@ class Product {
   int scVatExempt, pwdVatExempt, zeroRated;
   double unitCost = 0;
   double unitPrice = 0;
-  double scDiscountPercent, pwdDiscountPercent, otherDiscountPercent;
+  double scDiscountPercent = 0;
+  double pwdDiscountPercent = 0;
+  double otherDiscountPercent = 0;
 
   List<String> columns = ['productId', 'productName', 'categoryId', 'productCode', 'unitCost',
     'unitPrice', 'nonVat', 'vat', 'scDiscount', 'scDiscountPercent', 'pwdDiscount',

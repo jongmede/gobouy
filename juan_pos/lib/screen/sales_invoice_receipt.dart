@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:juan_pos/database/database_helper.dart';
 import 'package:juan_pos/database/sales_invoice.dart';
-import 'package:juan_pos/database/tender.dart';
+import 'package:juan_pos/model/tender.dart';
 import 'package:juan_pos/database/transaction.dart';
 import 'package:juan_pos/model/product.dart';
 
